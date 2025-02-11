@@ -1,4 +1,4 @@
 local.env
 production.env
-node_modules
-.idea
+node_modules/*
+.idea/*
