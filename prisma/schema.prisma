@@ -1,0 +1,85 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model Article {
+  id          BigInt        @id @default(autoincrement())
+  title       String     @db.VarChar(50)
+  body        String
+  user_id     BigInt
+  status      String     @db.VarChar(20)
+  created_at  DateTime?  @default(now()) @db.Timestamp(6)
+  modified_at DateTime?  @default(now()) @db.Timestamp(6)
+  users       User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
+  comments    Comment[]
+
+  @@map("articles")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model Comment {
+  id             BigInt           @id @default(autoincrement())
+  body           String        @db.VarChar(150)
+  user_id        BigInt
+  article_id     BigInt?
+  testimonial_id BigInt?
+  status         String        @db.VarChar(20)
+  created_at     DateTime?     @default(now()) @db.Timestamp(6)
+  modified_at    DateTime?     @default(now()) @db.Timestamp(6)
+  articles       Article?     @relation(fields: [article_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "article_id")
+  testimonials   Testimonial? @relation(fields: [testimonial_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "testimonial_id")
+  users          User         @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
+  @@map("comments")
+}
+
+model Follow {
+  id                                  BigInt       @id @default(autoincrement())
+  following_user                      BigInt
+  followed_user                       BigInt
+  created_at                          DateTime? @default(now()) @db.Timestamp(6)
+  modified_at                         DateTime? @default(now()) @db.Timestamp(6)
+  users_follows_followed_userTousers  User     @relation("follows_followed_userTousers", fields: [followed_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "followed_user")
+  users_follows_following_userTousers User     @relation("follows_following_userTousers", fields: [following_user], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "following_user")
+  @@map("follows")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model Testimonial {
+  id          BigInt        @id @default(autoincrement())
+  title       String     @db.VarChar(50)
+  body        String
+  user_id     BigInt
+  status      String     @db.VarChar(20)
+  created_at  DateTime?  @default(now()) @db.Timestamp(6)
+  modified_at DateTime?  @default(now()) @db.Timestamp(6)
+  comments    Comment[]
+  users       User      @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction, map: "user_id")
+  @@map("testimonials")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model User {
+  id                                    BigInt            @id @default(autoincrement())
+  firstname                             String         @db.VarChar(50)
+  lastname                              String         @db.VarChar(50)
+  email                                 String         @db.VarChar(150) @unique
+  password                              String         @db.VarChar(128)
+  age                                   Int
+  created_at                            DateTime?      @default(now()) @db.Timestamp(6)
+  modified_at                           DateTime?      @default(now()) @db.Timestamp(6)
+  role                                  String?        @db.VarChar(20)
+  username                              String         @db.VarChar(50) @unique
+  supprime                              Int            @default(0) @db.SmallInt
+  articles                              Article[]
+  comments                              Comment[]
+  follows_follows_followed_userTousers  Follow[]      @relation("follows_followed_userTousers")
+  follows_follows_following_userTousers Follow[]      @relation("follows_following_userTousers")
+  testimonials                          Testimonial[]
+  @@map("users")
+}
