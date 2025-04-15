@@ -7,7 +7,7 @@
     "node": ">=14.0.0"
   },
   "dependencies": {
-    "@prisma/client": "^6.3.1",
+    "@prisma/client": "^6.4.1",
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.20.3",
     "dotenv": "^16.4.7",
@@ -15,6 +15,7 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
+    "pnpm": "^10.5.2",
     "pnpx": "^0.0.1"
   },
   "devDependencies": {
@@ -28,15 +29,8 @@
     "@types/node": "^22.13.1",
     "jest": "^29.7.0",
     "jsx": "^0.9.89",
-    "prisma": "^6.3.1",
+    "prisma": "^6.4.1",
     "ts-node": "^10.9.2",
     "typescript": "^5.7.3"
-  },
-  "pnpm": {
-    "ignoredBuiltDependencies": [
-      "@prisma/client",
-      "@prisma/engines",
-      "prisma"
-    ]
   }
 }

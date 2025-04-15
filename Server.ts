@@ -1,6 +1,7 @@
 import express from "express";
 import bodyParser from 'body-parser';
 import UsersRoute from "./src/routes/UsersRoute";
+import ProfilesRoute from "./src/routes/ProfilesRoute";
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.get("/", (req: express.Request, res: express.Response) => {
 })
 
 app.use('/api/users', UsersRoute)
+app.use('/api/profiles', ProfilesRoute)
 
 const port = 3000
 
