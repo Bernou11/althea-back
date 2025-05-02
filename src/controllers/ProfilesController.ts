@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
 import prisma from "../config/PrismaConfig";
 import handleBigInt from "../utils/ConversionsUtils";
 import dotenv from "dotenv";
 import {Profile} from "../types/ProfileType";
 import {softDeleteUser} from "./UsersController";
+import { Request, Response } from "express";
 
 Object.keys(process.env).forEach((key) => {
     if (key.startsWith('DATABASE_')) {

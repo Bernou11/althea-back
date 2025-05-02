@@ -89,6 +89,19 @@ model User {
   @@map("users")
 }
 
+model Message {
+  id                                    BigInt           @id @default(autoincrement())
+  nom                                   String
+  email                                 String
+  phone                                 String           @db.VarChar(20)
+  message                               String
+  treated                               Int              @default(0) @db.SmallInt
+  created                               DateTime?     @default(now()) @db.Timestamp(6)
+  modified                              DateTime?     @default(now()) @db.Timestamp(6)
+
+  @@map("messages")
+}
+
 model Profile {
   id          BigInt      @id @default(autoincrement())
   created_at  DateTime @default(now()) @db.Timestamp(6)
