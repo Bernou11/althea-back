@@ -10,7 +10,7 @@ Object.keys(process.env).forEach((key) => {
     }
 });
 
-if (process.env.NODE_ENV === 'production.env') {
+if (process.env.NODE_ENV === 'production') {
     dotenv.config({ path: 'production.env' });
 } else {
     dotenv.config({ path: 'local.env' });
