@@ -1,6 +1,7 @@
 {
   "scripts": {
     "start": "npx ts-node ./Server.ts",
+    "build": "tsc --project tsconfig.json",
     "test": "jest"
   },
   "engines": {
@@ -15,7 +16,8 @@
     "express": "^4.21.2",
     "express-validator": "^7.2.1",
     "jsonwebtoken": "^9.0.2",
-    "pnpm": "^10.5.2",
+    "pg": "^8.15.6",
+    "pnpm": "^10.10.0",
     "pnpx": "^0.0.1"
   },
   "devDependencies": {
