@@ -1,7 +1,7 @@
 import express, { Request, Response } from "express";
-import UsersRoute from "./src/routes/UsersRoute";
-import ProfilesRoute from "./src/routes/ProfilesRoute";
-import MessagesRoute from "./src/routes/MessagesRoute";
+import UsersRoute from "./routes/UsersRoute";
+import ProfilesRoute from "./routes/ProfilesRoute";
+import MessagesRoute from "./routes/MessagesRoute";
 
 const app = express();
 import cors from 'cors';

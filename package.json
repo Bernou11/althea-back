@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "start": "npx ts-node ./Server.ts",
+    "start": "npx ts-node src/server.ts",
     "build": "tsc --project tsconfig.json",
     "test": "jest"
   },
