@@ -26,11 +26,9 @@ export const getAllUsers = async (req: Request, res: Response): Promise<void> =>
                 supprime: 0,
             },
             select: {
-                username: true,
                 firstname: true,
                 lastname: true,
                 email: true,
-                age: true,
             },
         });
 
@@ -57,11 +55,9 @@ export const getUserById = async (req: Request, res: Response): Promise<Response
         const user = await prisma.user.findUnique({
             where: { id, supprime: 0 },
             select: {
-                username: true,
                 firstname: true,
                 lastname: true,
                 email: true,
-                age: true
             }
         });
         if (!user) {
@@ -79,11 +75,11 @@ export const getUserById = async (req: Request, res: Response): Promise<Response
 };
 
 export const createUser = async (req: Request, res: Response) => {
-    const { firstname, lastname, email, password, age, username, role, bio, pseudo, picture } = req.body;
+    const { firstname, lastname, email, password, role, bio, pseudo, picture } = req.body;
     try {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = await prisma.user.create({
-            data: { firstname, lastname, email, password: hashedPassword, age, username, role},
+            data: { firstname, lastname, email, password: hashedPassword, role},
         });
 
         const safeUser = handleBigInt(newUser);
@@ -99,7 +95,7 @@ export const createUser = async (req: Request, res: Response) => {
 };
 
 export const login = async (req: Request, res: Response): Promise<any | void> => {
-    const { email , password } = req.body;
+    const { email , password, firstname } = req.body;
 
     try {
         const user = await prisma.user.findFirst({
@@ -110,7 +106,7 @@ export const login = async (req: Request, res: Response): Promise<any | void> =>
             return res.status(401).json({ message: 'Invalid email or password' });
         }
 
-        const token = generateToken(handleBigInt(user.id));
+        const token = generateToken(handleBigInt(user.id), user.firstname);
         res.json({ token });
     } catch (error) {
         res.status(500).json({ message: 'Login failed', error });
@@ -119,12 +115,12 @@ export const login = async (req: Request, res: Response): Promise<any | void> =>
 
 export const updateUser = async (req: Request, res: Response) => {
     const id = parseInt(req.params.id);
-    const { firstname, lastname, email, password, age, username, role }: User = req.body;
+    const { firstname, lastname, email, password, role }: User = req.body;
     try {
         const hashedPassword = password ? await bcrypt.hash(password, 10) : undefined;
         const updatedUser = await prisma.user.update({
             where: { id },
-            data: { firstname, lastname, email, password: hashedPassword, age, username, role },
+            data: { firstname, lastname, email, password: hashedPassword, role },
         });
         res.json(updatedUser);
     } catch (error) {
