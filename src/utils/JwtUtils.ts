@@ -9,8 +9,8 @@ if (process.env.NODE_ENV === 'production') {
 
 const SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
-export const generateToken = (userId: number): string => {
-    return jwt.sign({ userId }, SECRET, { expiresIn: '1h' });
+export const generateToken = (userId: number, firstname: string): string => {
+    return jwt.sign({ userId, firstname }, SECRET, { expiresIn: '1h' });
 };
 
 export const verifyToken = (token: string) => {

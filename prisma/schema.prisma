@@ -73,11 +73,9 @@ model User {
   lastname                              String        @db.VarChar(50)
   email                                 String        @unique @db.VarChar(150)
   password                              String        @db.VarChar(128)
-  age                                   Int
   created_at                            DateTime?     @default(now()) @db.Timestamp(6)
   modified_at                           DateTime?     @default(now()) @db.Timestamp(6)
   role                                  String        @db.VarChar(20)
-  username                              String        @db.VarChar(50)
   supprime                              Int           @default(0) @db.SmallInt
   articles                              Article[]
   comments                              Comment[]
