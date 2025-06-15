@@ -1,13 +1,10 @@
-import {PrismaClient} from "@prisma/client"
+import { PrismaClient } from '@prisma/client';
+import 'dotenv/config';
 
-const prisma = new PrismaClient()
+// Initialize the Prisma client
+const prisma = new PrismaClient({
+    log: ['query', 'info', 'warn', 'error'],
+});
 
-prisma.$connect()
-    .then(() => {
-        console.log('Connected to the database');
-    })
-    .catch((err: any) => {
-        console.error('Error connecting to the database:', err);
-    });
-
-export default prisma
+// Export the instance for usage in your app
+export default prisma;
