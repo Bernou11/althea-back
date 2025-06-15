@@ -13,8 +13,8 @@ else {
     dotenv_1.default.config({ path: 'local.env' });
 }
 const SECRET = process.env.JWT_SECRET || 'your_secret_key';
-const generateToken = (userId) => {
-    return jsonwebtoken_1.default.sign({ userId }, SECRET, { expiresIn: '1h' });
+const generateToken = (userId, firstname) => {
+    return jsonwebtoken_1.default.sign({ userId, firstname }, SECRET, { expiresIn: '1h' });
 };
 exports.generateToken = generateToken;
 const verifyToken = (token) => {

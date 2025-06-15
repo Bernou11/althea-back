@@ -4,6 +4,9 @@ function handleBigInt(obj) {
     if (typeof obj === 'bigint') {
         return obj.toString();
     }
+    else if (obj instanceof Date) {
+        return obj;
+    }
     else if (Array.isArray(obj)) {
         return obj.map(handleBigInt);
     }

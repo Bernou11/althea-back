@@ -37,11 +37,9 @@ const getAllUsers = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
                 supprime: 0,
             },
             select: {
-                username: true,
                 firstname: true,
                 lastname: true,
                 email: true,
-                age: true,
             },
         });
         res.json(users);
@@ -69,11 +67,9 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
         const user = yield PrismaConfig_1.default.user.findUnique({
             where: { id, supprime: 0 },
             select: {
-                username: true,
                 firstname: true,
                 lastname: true,
                 email: true,
-                age: true
             }
         });
         if (!user) {
@@ -93,11 +89,11 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 });
 exports.getUserById = getUserById;
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { firstname, lastname, email, password, age, username, role, bio, pseudo, picture } = req.body;
+    const { firstname, lastname, email, password, role, bio, pseudo, picture } = req.body;
     try {
         const hashedPassword = yield bcryptjs_1.default.hash(password, 10);
         const newUser = yield PrismaConfig_1.default.user.create({
-            data: { firstname, lastname, email, password: hashedPassword, age, username, role },
+            data: { firstname, lastname, email, password: hashedPassword, role },
         });
         const safeUser = (0, ConversionsUtils_1.default)(newUser);
         req.body.user_id = newUser.id;
@@ -110,7 +106,7 @@ const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
 });
 exports.createUser = createUser;
 const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { email, password } = req.body;
+    const { email, password, firstname } = req.body;
     try {
         const user = yield PrismaConfig_1.default.user.findFirst({
             where: { email }
@@ -118,7 +114,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!user || !(yield bcryptjs_1.default.compare(password, user.password))) {
             return res.status(401).json({ message: 'Invalid email or password' });
         }
-        const token = (0, JwtUtils_1.generateToken)((0, ConversionsUtils_1.default)(user.id));
+        const token = (0, JwtUtils_1.generateToken)((0, ConversionsUtils_1.default)(user.id), user.firstname);
         res.json({ token });
     }
     catch (error) {
@@ -128,12 +124,12 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.login = login;
 const updateUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const id = parseInt(req.params.id);
-    const { firstname, lastname, email, password, age, username, role } = req.body;
+    const { firstname, lastname, email, password, role } = req.body;
     try {
         const hashedPassword = password ? yield bcryptjs_1.default.hash(password, 10) : undefined;
         const updatedUser = yield PrismaConfig_1.default.user.update({
             where: { id },
-            data: { firstname, lastname, email, password: hashedPassword, age, username, role },
+            data: { firstname, lastname, email, password: hashedPassword, role },
         });
         res.json(updatedUser);
     }
